@@ -13,8 +13,9 @@ module.exports = {
             nodeIntegration: true,
             builderOptions: {
                 nsis: {
-                    oneClick:false,
+                    oneClick: false,
                     allowToChangeInstallationDirectory: true,
+                    perMachine: true
                 }
             }
         }

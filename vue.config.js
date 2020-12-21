@@ -13,6 +13,7 @@ module.exports = {
             nodeIntegration: true,
             builderOptions: {
                 nsis: {
+                    oneClick:false,
                     allowToChangeInstallationDirectory: true,
                 }
             }

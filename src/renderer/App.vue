@@ -6,6 +6,18 @@
 </template>
 
 <script>
+import { Ipc } from '@/ipc/ipcRenderer'
+  let data={
+      'a':'index',
+      'b':2
+  }
+Ipc.on('index',(event, arg)=>{
+  console.log(456,event, arg)
+})
+setInterval(() => {
+  Ipc.send('work','orderPay',data)
+}, 5 * 1000)// 等待 5 秒后第一次同步数据
+
 import HelloWorld from './components/HelloWorld.vue'
 
 export default {

@@ -2,19 +2,19 @@ import {  ipcMain } from 'electron'
 // 主线程分发子线程
 class Ipc {
     constructor() {
-        this._index = null
+        this._renderer = null
         this._work = null
     }
-    onIndex() {
-        ipcMain.on('index-process',  (event, arg) =>{
-            this._index = event
+    onRenderer() {
+        ipcMain.on('renderer-process',  (event, arg) =>{
+            this._renderer = event
             try {
                 arg.state = 'success'
-                this._work.sender.send('process-index', arg)
+                this._work.sender.send('process-renderer', arg)
             } catch (e) {
                 arg.state = 'error'
                 arg.error = e
-                this._index.sender.send('process-work', arg)
+                this._renderer.sender.send('process-work', arg)
             }
         });
     }
@@ -23,18 +23,17 @@ class Ipc {
             this._work = event
             try {
                 arg.state = 'success'
-                this._index.sender.send('process-work', arg)
+                this._renderer.sender.send('process-work', arg)
             } catch (e) {
                 arg.state = 'error'
                 arg.error = e
-                this._work.sender.send('process-index', arg)
+                this._work.sender.send('process-renderer', arg)
             }
         });
     }
     run() {
-        this.onIndex()
+        this.onRenderer()
         this.onWork()
-        console.log(456);
     }
 }
 let ipc = new Ipc()

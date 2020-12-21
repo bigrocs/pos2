@@ -9,3 +9,5 @@ tag:
 run:
 	npm run init
 	npm run dev
+build:
+	npm run electron:build

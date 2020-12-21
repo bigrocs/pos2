@@ -66,6 +66,14 @@ app.on('ready', async () => {
   createWindows()
 })
 
+// 开机启动
+app.setLoginItemSettings({
+  openAtLogin: true, // Boolean 在登录时启动应用
+  openAsHidden: true // Boolean (可选) mac 表示以隐藏的方式启动应用。~~~~
+  // path: '', String (可选) Windows - 在登录时启动的可执行文件。默认为 process.execPath.
+  // args: [] String Windows - 要传递给可执行文件的命令行参数。默认为空数组。注意用引号将路径换行。
+})
+
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
   if (process.platform === 'win32') {

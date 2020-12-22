@@ -1,26 +1,22 @@
-// import Store from '@/utils/electron-store'
+import Store from '@/renderer/ipc/electron-store'
 const state = {
   sidebar: {
-    // opened: Store.get('sidebarStatus') ? !!+Store.get('sidebarStatus') : true,
+    opened:  true,
     withoutAnimation: false
   },
   device: 'desktop'
 }
-
+Store.get('sidebarStatus').then(value=>{
+  state.sidebar.opened = value
+})
 const mutations = {
   TOGGLE_SIDEBAR: state => {
     state.sidebar.opened = !state.sidebar.opened
     state.sidebar.withoutAnimation = false
-    console.log(state.sidebar.opened);
-    
-    if (state.sidebar.opened) {
-      // Store.set('sidebarStatus', 1)
-    } else {
-      // Store.set('sidebarStatus', 0)
-    }
+    Store.set('sidebarStatus', state.sidebar.opened)
   },
   CLOSE_SIDEBAR: (state, withoutAnimation) => {
-    // Store.set('sidebarStatus', 0)
+    Store.set('sidebarStatus', false)
     state.sidebar.opened = false
     state.sidebar.withoutAnimation = withoutAnimation
   },

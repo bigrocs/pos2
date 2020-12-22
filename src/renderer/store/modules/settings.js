@@ -1,8 +1,7 @@
 // const getmac = require('getmac')
 // import Store from '@/utils/electron-store'
 // import { isServer } from '@/utils/healthy'
-const t = require('./../../../../package.json')
-console.log(t, process);
+const p = require('./../../../../package.json')
 
 
 const state = {
@@ -11,7 +10,7 @@ const state = {
   fixedHeader: true,
   isHeader: true,
   sidebarLogo: true,
-  // version: version,
+  version: p.version,
   // 自定义开发
   api: '', // baseURL集合每行一个回车分割
   baseURL: '', // 主API地址

@@ -54,8 +54,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~@/assets/styles/mixin.scss";
-  @import "~@/assets/styles/variables.scss";
+  @import "~@/renderer/assets/styles/mixin.scss";
+  @import "~@/renderer/assets/styles/variables.scss";
 
   .app-wrapper {
     @include clearfix;

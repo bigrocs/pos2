@@ -1,6 +1,6 @@
 /** When your routing user is too long, you can split it into small modules **/
 
-import Layout from '@/layout'
+import Layout from '@/renderer/layout'
 
 export default {
   path: '/terminal',
@@ -16,7 +16,7 @@ export default {
     {
       path: 'cashier',
       name: 'Cashier',
-      component: () => import('@/views/terminal/cashier/index'),
+      // component: () => import('@/views/terminal/cashier/index'),
       meta: {
         title: '收银台',
         icon: 'cashier',
@@ -26,7 +26,7 @@ export default {
     }, {
       path: 'order',
       name: 'Order',
-      component: () => import('@/views/terminal/order/index'),
+      // component: () => import('@/views/terminal/order/index'),
       meta: {
         title: '订单查询',
         icon: 'order',
@@ -36,7 +36,7 @@ export default {
     }, {
       path: 'pay',
       name: 'Pay',
-      component: () => import('@/views/terminal/pay/index'),
+      // component: () => import('@/views/terminal/pay/index'),
       meta: {
         title: '支付订单',
         icon: 'pay',
@@ -46,7 +46,7 @@ export default {
     }, {
       path: 'inventory',
       name: 'Inventory',
-      component: () => import('@/views/terminal/inventory/index'),
+      // component: () => import('@/views/terminal/inventory/index'),
       meta: {
         title: '盘点商品',
         icon: 'inventory',
@@ -56,7 +56,7 @@ export default {
     }, {
       path: 'orderPD',
       name: 'OrderPD',
-      component: () => import('@/views/terminal/orderPD/index'),
+      // component: () => import('@/views/terminal/orderPD/index'),
       meta: {
         title: '盘点订单',
         icon: 'orderPD',
@@ -66,7 +66,7 @@ export default {
     }, {
       path: 'password',
       name: 'Password',
-      component: () => import('@/views/terminal/password/index'),
+      // component: () => import('@/views/terminal/password/index'),
       meta: {
         title: '修改密码',
         icon: 'password',
@@ -76,7 +76,7 @@ export default {
     }, {
       path: 'config',
       name: 'Config',
-      component: () => import('@/views/terminal/config/index'),
+      // component: () => import('@/views/terminal/config/index'),
       meta: {
         title: '系统配置',
         icon: 'config',

@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, globalShortcut } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -10,7 +10,8 @@ require('@/ipc/ipcMain') // 加载线程通信
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
-
+let renchererWindow
+let workWindow
 async function createWindow(path) {
   // Create the browser window.
   const win = new BrowserWindow({
@@ -33,15 +34,18 @@ async function createWindow(path) {
   } else {
     createProtocol('app')
     // Load the index.html when not in development
-    win.loadURL(`app://./${path}.html`)
+    await win.loadURL(`app://./${path}.html`)
   }
   if (path !== 'rencherer') { // 隐藏非渲染进程
-    win.hide()
+    await win.hide()
+    workWindow = win
+  }else{
+    renchererWindow = win
   }
 }
 async function createWindows() {
+  await createWindow('work')
   createWindow('rencherer')
-  createWindow('work')
 }
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -73,14 +77,6 @@ app.on('ready', async () => {
   createWindows()
 })
 
-// 开机启动
-app.setLoginItemSettings({
-  openAtLogin: true, // Boolean 在登录时启动应用
-  openAsHidden: true // Boolean (可选) mac 表示以隐藏的方式启动应用。~~~~
-  // path: '', String (可选) Windows - 在登录时启动的可执行文件。默认为 process.execPath.
-  // args: [] String Windows - 要传递给可执行文件的命令行参数。默认为空数组。注意用引号将路径换行。
-})
-
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
   if (process.platform === 'win32') {
@@ -95,3 +91,29 @@ if (isDevelopment) {
     })
   }
 }
+
+
+// 开机启动
+app.setLoginItemSettings({
+  openAtLogin: true, // Boolean 在登录时启动应用
+  openAsHidden: true // Boolean (可选) mac 表示以隐藏的方式启动应用。~~~~
+  // path: '', String (可选) Windows - 在登录时启动的可执行文件。默认为 process.execPath.
+  // args: [] String Windows - 要传递给可执行文件的命令行参数。默认为空数组。注意用引号将路径换行。
+})
+
+app.on('ready', () => {
+  // const devTools = false
+  // globalShortcut.register('tab', () => {
+  //   if (devTools) {
+  //     mainWindow.webContents.openDevTools()
+  //     devTools = false
+  //   } else {
+  //     mainWindow.webContents.closeDevTools()
+  //     devTools = true
+  //   }
+  // })
+  globalShortcut.register('home', () => {
+    renchererWindow.webContents.send('process-main-home', 'home')
+    renchererWindow.show()
+  })
+})

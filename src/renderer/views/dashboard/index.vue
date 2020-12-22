@@ -1,18 +1,16 @@
 <template>
   <div class="dashboard-container">
-    <!-- <terminal v-if="isTerminal"/> -->
-    <!-- <div v-else class="dashboard-text">name: {{ name }} {{ hello }}</div> -->
-    123
-    <div class="dashboard-text">name: {{ name }} {{ hello }}</div>
+    <terminal v-if="isTerminal"/>
+    <div v-else class="dashboard-text">name: {{ name }} {{ hello }}</div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-// import Terminal from './terminal/index.vue'
+import Terminal from './terminal/index.vue'
 export default {
   name: 'Dashboard',
-  // components: { Terminal },
+  components: { Terminal },
   data() {
     return {
       hello: 'hello'
@@ -21,7 +19,7 @@ export default {
   computed: {
     ...mapGetters([
       'name',
-      // 'isTerminal'
+      'isTerminal'
     ])
   },
   created() {
@@ -32,7 +30,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "~@/assets/less/atom/syntax-variables.less";
+@import "~@/renderer/assets/less/atom/syntax-variables.less";
 .dashboard {
   &-container {
     margin: 30px;

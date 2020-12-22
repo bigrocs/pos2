@@ -7,7 +7,7 @@ Vue.use(Router)
 import Layout from '@/renderer/layout'
 
 /* Router Modules */
-// import terminalRouter from './modules/terminal'
+import terminalRouter from './modules/terminal'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -39,11 +39,11 @@ export const constantRoutes = [
   //   component: () => import('@/views/install/index'),
   //   hidden: true
   // },
-  // {
-  //   path: '/login',
-  //   component: () => import('@/views/login/index'),
-  //   hidden: true
-  // },
+  {
+    path: '/login',
+    component: () => import('@/renderer/views/login/index'),
+    hidden: true
+  },
 
   // {
   //   path: '/404',
@@ -69,7 +69,7 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   /** when your routing map is too long, you can split it into small modules **/
-  // terminalRouter,
+  terminalRouter,
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

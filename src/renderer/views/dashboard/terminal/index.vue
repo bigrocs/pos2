@@ -35,7 +35,7 @@
         </el-col>
         
 
-        <el-col :span="8">
+        <!-- <el-col :span="8">
           订单: <b style="color:#67C23A">{{orderInfo.count}}</b> 笔
         </el-col>
         <el-col :span="8">
@@ -49,13 +49,13 @@
           总金额: <b style="color:#F56C6C">{{(orderInfo.total / 100).toFixed(2)}}</b> 元
         </el-col>
         <span v-for="(pay,key) in orderInfo.pays" :key="key" >
-          <el-col :span="2.7" v-if="isTotal || pay.payId > 0"><!-- //不显示现金 -->
+          <el-col :span="2.7" v-if="isTotal || pay.payId > 0">
             <span>{{pay.name}}: <b style="color:#409EFF">{{(pay.amount / 100).toFixed(2) }}</b> 元</span>
           </el-col>
         </span>
         <el-col :span="24">
             <span>实际扫码金额 <b style="color:#F56C6C">{{(orderInfo.payTotal / 100).toFixed(2) }}</b> 元</span>
-        </el-col>
+        </el-col> -->
       </el-row>
       <el-dialog title="结账退出" :visible.sync="dialogVisible" @close="escAccounts">
         <el-input ref="accounts" v-model="password" type="password" placeholder="请输入密码" @keyup.enter.native="accountsHanlder"></el-input>
@@ -69,10 +69,10 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
-import { Settle as accountsSettle } from '@/api/accounts'
-import Terminal from '@/sql2000/model/terminal'
-import print from '@/utils/print'
-import log from '@/utils/log'
+// import { Settle as accountsSettle } from '@/api/accounts'
+// import Terminal from '@/sql2000/model/terminal'
+// import print from '@/utils/print'
+// import log from '@/utils/log'
 
 export default {
   name: 'terminal',
@@ -112,7 +112,7 @@ export default {
   },
   mounted() {
     document.addEventListener('keydown', this.keydown)
-    this.$store.dispatch('terminal/changeOrderInfo')
+    this.$store.dispatch('terminal/changeOrderInfo') // 更新订单信息
     this.initKeyboards()
   },
   methods: {
@@ -156,14 +156,14 @@ export default {
           this.$router.push({ path: '/terminal/password' })
           break
         case 'out':
-          log.h('info', 'quit', '用户: ' + this.username + ' 暂离退出')
+          // log.h('info', 'quit', '用户: ' + this.username + ' 暂离退出')
           if (this.username !== '0000') {
             this.$store.state.user.leave = true
           }
           this.logout()
           break
         case 'accounts':
-          log.h('info', 'accounts', '用户: ' + this.username + ' 结账')
+          // log.h('info', 'accounts', '用户: ' + this.username + ' 结账')
           this.removeEventListener()
           this.dialogVisible = true
           setTimeout(() => {
@@ -172,7 +172,7 @@ export default {
           }, 0)
           break
         case 'quit':
-          log.h('info', 'quit', '用户: ' + this.username + ' 退出软件')
+          // log.h('info', 'quit', '用户: ' + this.username + ' 退出软件')
           this.logout()
           this.$electron.remote.app.quit()
           break
@@ -203,56 +203,56 @@ export default {
       document.addEventListener('keydown', this.keydown)
     },
     accountsHanlder() {
-      this.dialogVisible = false
-      this.$store.dispatch('user/login', {
-        username: this.username,
-        password: this.password
-      }).then(() => {
-        log.h('info', 'user/login', '用户: ' + this.username + ' 登录成功')
-        accountsSettle().then(response => { // 结账
-          Terminal.PosCode = this.$store.state.settings.terminal // 更新终端状态
-          if (Terminal.PosCode) {
-            Terminal.Get().then(() => {
-              Terminal.PosState = '70'
-              Terminal.UserName = ''
-              Terminal.UserCode = ''
-              Terminal.PreJzDate = new Date()
-              Terminal.Save().then(() => {
-                log.h('info', 'accounts', '用户: ' + this.username + ' 结账成功退出')
-                print.accounts(true).then(response => { // 打印结账数据
-                  this.$message({
-                    type: 'success',
-                    message: '结账打印成功'
-                  })
-                }).catch((error) => {
-                  log.h('error', 'accounts', '用户: ' + this.username + ' 结账打印失败失败' + JSON.stringify(error.message))
-                })
-                this.logout()
-              }).catch(error => {
-                this.$message({
-                  type: 'error',
-                  message: '结账成功保存终端失败: ' + error.message
-                })
-                log.h('error', 'Terminal', '用户: ' + this.username + ' 结账成功保存终端失败' + JSON.stringify(error.message))
-              })
-            }).catch(error => {
-              this.$message({
-                type: 'error',
-                message: '结账成功获取终端失败: ' + error.message
-              })
-              log.h('error', 'Terminal', '用户: ' + this.username + ' 结账成功获取终端失败' + JSON.stringify(error.message))
-            })
-          }
-        }).catch(error => {
-          log.h('error', 'accounts', '用户: ' + this.username + ' 结账成功失败' + JSON.stringify(error.message))
-          this.$message({
-            type: 'error',
-            message: '结账失败: ' + error.message
-          })
-        })
-      }).catch(error => {
-        log.h('error', 'user/login', '用户: ' + this.username + ' 登录失败,' + 'ERROR:' + error.message)
-      })
+      // this.dialogVisible = false
+      // this.$store.dispatch('user/login', {
+      //   username: this.username,
+      //   password: this.password
+      // }).then(() => {
+      //   log.h('info', 'user/login', '用户: ' + this.username + ' 登录成功')
+      //   accountsSettle().then(response => { // 结账
+      //     Terminal.PosCode = this.$store.state.settings.terminal // 更新终端状态
+      //     if (Terminal.PosCode) {
+      //       Terminal.Get().then(() => {
+      //         Terminal.PosState = '70'
+      //         Terminal.UserName = ''
+      //         Terminal.UserCode = ''
+      //         Terminal.PreJzDate = new Date()
+      //         Terminal.Save().then(() => {
+      //           log.h('info', 'accounts', '用户: ' + this.username + ' 结账成功退出')
+      //           print.accounts(true).then(response => { // 打印结账数据
+      //             this.$message({
+      //               type: 'success',
+      //               message: '结账打印成功'
+      //             })
+      //           }).catch((error) => {
+      //             log.h('error', 'accounts', '用户: ' + this.username + ' 结账打印失败失败' + JSON.stringify(error.message))
+      //           })
+      //           this.logout()
+      //         }).catch(error => {
+      //           this.$message({
+      //             type: 'error',
+      //             message: '结账成功保存终端失败: ' + error.message
+      //           })
+      //           log.h('error', 'Terminal', '用户: ' + this.username + ' 结账成功保存终端失败' + JSON.stringify(error.message))
+      //         })
+      //       }).catch(error => {
+      //         this.$message({
+      //           type: 'error',
+      //           message: '结账成功获取终端失败: ' + error.message
+      //         })
+      //         log.h('error', 'Terminal', '用户: ' + this.username + ' 结账成功获取终端失败' + JSON.stringify(error.message))
+      //       })
+      //     }
+      //   }).catch(error => {
+      //     log.h('error', 'accounts', '用户: ' + this.username + ' 结账成功失败' + JSON.stringify(error.message))
+      //     this.$message({
+      //       type: 'error',
+      //       message: '结账失败: ' + error.message
+      //     })
+      //   })
+      // }).catch(error => {
+      //   log.h('error', 'user/login', '用户: ' + this.username + ' 登录失败,' + 'ERROR:' + error.message)
+      // })
     },
     async logout() {
       await this.$store.dispatch('user/logout')
@@ -268,7 +268,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "~@/assets/less/atom/syntax-variables.less";
+@import "~@/renderer/assets/less/atom/syntax-variables.less";
 .router{
   display: -webkit-flex; /* Safari */
   display: flex;

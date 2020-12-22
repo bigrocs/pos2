@@ -9,6 +9,6 @@ const getters = {
   roles: state => state.user.roles,
   permission_routes: state => state.permission.routes,
   // baseURL: state => state.settings.baseURL,
-  // isTerminal: state => state.settings.isTerminal
+  isTerminal: state => state.pos.isTerminal
 }
 export default getters

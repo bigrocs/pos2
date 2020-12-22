@@ -13,7 +13,17 @@ Ipc.on('work', (event, arg) => {
         Ipc.send('renderer', 'electron-store.set', res)
     }
     if (arg.method === 'electron-store.get') {
-        Ipc.send('renderer', 'electron-store.get', Store.get(arg.data))
+        const key = arg.data
+        const value = Store.get(key)
+        Ipc.send('renderer', 'electron-store.get', { key,value})
+    }
+    if (arg.method === 'electron-store.delete') {
+        const key = arg.data
+        const value = Store.delete(key)
+        Ipc.send('renderer', 'electron-store.delete', { key, value })
+    }
+    if (arg.method === 'electron-store.all') {
+        Ipc.send('renderer', 'electron-store.all', Store.store)
     }
 })
 Ipc.send('renderer', 'test', {

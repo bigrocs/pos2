@@ -9,6 +9,9 @@ export const Ipc = {
     on(process, fun){
        return ipcRenderer.on('process-' + process, fun)
     },
+    once(process, fun) {
+        return ipcRenderer.once('process-' + process, fun)
+    },
     send(process, method, data){
         this.event.method = method
         this.event.data = data

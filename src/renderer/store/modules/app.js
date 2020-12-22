@@ -6,17 +6,14 @@ const state = {
   },
   device: 'desktop'
 }
-Store.get('sidebarStatus').then(value=>{
-  state.sidebar.opened = value
-})
 const mutations = {
   TOGGLE_SIDEBAR: state => {
     state.sidebar.opened = !state.sidebar.opened
     state.sidebar.withoutAnimation = false
-    Store.set('sidebarStatus', state.sidebar.opened)
+    Store.set('app.sidebar.opened', state.sidebar.opened)
   },
   CLOSE_SIDEBAR: (state, withoutAnimation) => {
-    Store.set('sidebarStatus', false)
+    Store.set('app.sidebar.opened', false)
     state.sidebar.opened = false
     state.sidebar.withoutAnimation = withoutAnimation
   },

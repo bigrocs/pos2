@@ -1,4 +1,4 @@
-import { exePath } from '@/utils'
+import { exePath } from '@/work/utils'
 const Store = require('electron-store')
 
 export default new Store({

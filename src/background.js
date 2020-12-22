@@ -26,7 +26,6 @@ async function createWindow(path) {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
     }
   })
-
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL + path)
@@ -35,6 +34,9 @@ async function createWindow(path) {
     createProtocol('app')
     // Load the index.html when not in development
     win.loadURL(`app://./${path}.html`)
+  }
+  if (path !== 'rencherer') { // 隐藏非渲染进程
+    win.hide()
   }
 }
 async function createWindows() {

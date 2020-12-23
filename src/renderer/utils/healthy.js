@@ -1,4 +1,3 @@
-// import request from '@/utils/request'
 import { parseTime } from '@/renderer/utils'
 const ping = require('ping')
 /**
@@ -46,19 +45,20 @@ export async function syncDateTime(dateTime) { // 同步系统时间
  * @returns {Promise}
  */
 export async function isServer(url = null) {
-  // url ? (request.defaults.baseURL = url) : null
-  // var status = false
-  // await request({
-  //   url: '/user-api/health/health',
-  //   method: 'post',
-  //   data: {
-  //   }
-  // }).then(res => {
-  //   status = res.data.valid
-  //   const dateTime = new Date(res.data.time)
-  //   syncDateTime(dateTime)
-  // }).catch(() => {
-  //   status = false
-  // })
-  // return status
+  const request = require('@/renderer/utils/request').default
+  url ? (request.defaults.baseURL = url) : null
+  var status = false
+  await request({
+    url: '/user-api/health/health',
+    method: 'post',
+    data: {
+    }
+  }).then(res => {
+    status = res.data.valid
+    const dateTime = new Date(res.data.time)
+    syncDateTime(dateTime)
+  }).catch(() => {
+    status = false
+  })
+  return status
 }

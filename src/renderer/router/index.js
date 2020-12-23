@@ -34,13 +34,19 @@ import terminalRouter from './modules/terminal'
  * all roles can be accessed
  */
 export const constantRoutes = [
-  // {
-  //   path: '/install',
-  //   component: () => import('@/views/install/index'),
-  //   hidden: true
-  // },
+  {
+    path: '/install',
+    meta: {
+      title: '安装',
+    },
+    component: () => import('@/renderer/views/install/index'),
+    hidden: true
+  },
   {
     path: '/login',
+    meta: {
+      title: '登录',
+    },
     component: () => import('@/renderer/views/login/index'),
     hidden: true
   },

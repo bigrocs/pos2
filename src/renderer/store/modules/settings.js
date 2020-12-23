@@ -11,15 +11,16 @@ const state = {
   isHeader: true,
   sidebarLogo: true,
   version: p.version,
+  
   // 自定义开发
-  api: '', // baseURL集合每行一个回车分割
-  baseURL: '', // 主API地址
-  install: false, // 程序是否安装
+  // api: '', // baseURL集合每行一个回车分割
+  // baseURL: '', // 主API地址
+  // install: false, // 程序是否安装
 
   // // 终端设置
   // isTerminal: false, // 是否使用终端模式
   // terminal: '', // 终端号
-  // macAddress: '', // mac 地址
+
   // barcodeReg: '27PPPPPBBBBBC', // 条形码识别规则
   // log: 100, // 日志大小默认10MB
   // isTotal: false, // 总金额汇总显示【默认关闭】

@@ -1,4 +1,4 @@
-import Store from '@/renderer/ipc/electron-store'
+import Store from '@/renderer/utils/electron-store'
 const state = {
   sidebar: {
     opened:  true,

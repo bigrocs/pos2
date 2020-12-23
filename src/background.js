@@ -37,7 +37,7 @@ async function createWindow(path) {
     await win.loadURL(`app://./${path}.html`)
   }
   if (path !== 'rencherer') { // 隐藏非渲染进程
-    await win.hide()
+    // await win.hide()
     workWindow = win
   }else{
     renchererWindow = win

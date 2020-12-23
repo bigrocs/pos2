@@ -9,20 +9,21 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 const whiteList = ['/login', '/install'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
+  console.log(to.path);
   // start progress bar
   NProgress.start()
-  // // 初始化安装程序路由相当
-  // if (!store.state.settings.install) {
-  //   /* has no token */
-  //   if (whiteList.indexOf(to.path) !== -1 && to.path === '/install') {
-  //     // in the free login whitelist, go directly
-  //     next()
-  //   } else {
-  //     // other pages that do not have permission to access are redirected to the login page.
-  //     next(`/install?redirect=${to.path}`)
-  //     NProgress.done()
-  //   }
-  // }
+  // 初始化安装程序路由相当
+  if (!store.state.settings.install) {
+    /* has no token */
+    if (whiteList.indexOf(to.path) !== -1 && to.path === '/install') {
+      // in the free login whitelist, go directly
+      next()
+    } else {
+      // other pages that do not have permission to access are redirected to the login page.
+      next(`/install?redirect=${to.path}`)
+      NProgress.done()
+    }
+  }
   // set page title
   document.title = to.meta.title + '-pos'
 
@@ -68,9 +69,6 @@ router.beforeEach(async(to, from, next) => {
       // in the free login whitelist, go directly
       next()
     } else {
-
-
-      console.log(to.path, whiteList.indexOf(to.path) !== -1);
       // other pages that do not have permission to access are redirected to the login page.
       next(`/login?redirect=${to.path}`)
       NProgress.done()

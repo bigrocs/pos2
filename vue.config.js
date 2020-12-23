@@ -1,5 +1,6 @@
 // vue.config.js
 const path = require('path')
+const webpack = require('webpack')
 
 function resolve(dir) {
     return path.join(__dirname, '.', dir)
@@ -40,4 +41,13 @@ module.exports = {
                 symbolId: 'icon-[name]'
             })
     },
+    configureWebpack:{
+        // externals: ['pg', 'aws-sdk', 'pg-hstore'],
+        // plugins: [
+        //     new webpack.ContextReplacementPlugin(
+        //         /Sequelize(\\|\/)/,
+        //         path.resolve(__dirname, '../src')
+        //     )
+        // ]
+    }
 }

@@ -13,7 +13,7 @@ function sequelize(config) {
         useUTC: false,
         tdsVersion: '7_1',
         enableArithAbort: false,
-        // requestTimeout: 5000 // 超时时间 5s
+        requestTimeout: 5000 // 超时时间 5s
       }
     },
     logging: false

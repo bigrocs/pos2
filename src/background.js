@@ -19,13 +19,14 @@ async function createWindow(path) {
     height: 600, 
     useContentSize: true,
     fullscreen: true,
-    backgroundColor: '#303133', //
+    // backgroundColor: '#303133', //
     webPreferences: {
       webSecurity: false, // 允许 electron 跨域
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
-    }
+    },
+    icon: 'public/icon.png'
   })
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode

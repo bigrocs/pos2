@@ -28,6 +28,8 @@ module.exports = {
         }
     },
     chainWebpack: config => {
+        // config.resolve.alias
+        //     .set('@', path.join(__dirname, 'src/renderer'))
         config.module.rules.delete("svg"); //重点:删除默认配置中处理svg,
         config.module
             .rule('svg-sprite-loader')
@@ -42,12 +44,10 @@ module.exports = {
             })
     },
     configureWebpack:{
-        // externals: ['pg', 'aws-sdk', 'pg-hstore'],
-        // plugins: [
-        //     new webpack.ContextReplacementPlugin(
-        //         /Sequelize(\\|\/)/,
-        //         path.resolve(__dirname, '../src')
-        //     )
-        // ]
+        externals: {
+            sequelize: "require('sequelize')",
+            sqlite3: "require('sqlite3')",
+            tedious: "require('tedious')"
+        }
     }
 }

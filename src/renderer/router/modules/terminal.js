@@ -1,6 +1,6 @@
 /** When your routing user is too long, you can split it into small modules **/
 
-import Layout from '@/renderer/layout'
+import Layout from '@/layout'
 
 export default {
   path: '/terminal',

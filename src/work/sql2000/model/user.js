@@ -1,9 +1,8 @@
 const Sequelize = require('sequelize')
-import connection from '@/sql2000/model/connection'
-import { trim } from '@/utils'
+import connection from '~/sql2000/model/connection'
+import { trim } from '~/utils'
 const pool = connection.Pool()
-import store from '@/store'
-
+import Store from '~/utils/electron-store'
 // 删除字符串两边空格
 function handerItem(items) {
   Object.keys(items).forEach(key => {
@@ -17,7 +16,8 @@ const user = {
   // 获取全部用户
   All() {
     return new Promise((resolve, reject) => {
-      if (!store.state.healthy.isSql2000) {
+      const store = Store.store
+      if (!store.healthy.isSql2000) {
         reject(Error('服务器断开！！(SQL2000服务器断开)'))
       }
       pool.DB.query(`select UserCode as code, UserName as name, PassWd as password from tXsUser`,
@@ -34,7 +34,8 @@ const user = {
   },
   Password(username, password) {
     return new Promise((resolve, reject) => {
-      if (!store.state.healthy.isSql2000) {
+      const store = Store.store
+      if (!store.healthy.isSql2000) {
         reject(Error('服务器断开！！(SQL2000服务器断开)'))
       }
       pool.DB.query(`

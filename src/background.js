@@ -4,8 +4,9 @@ import { app, protocol, BrowserWindow, globalShortcut } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
-require('@/ipc/ipcMain') // 加载线程通信
 
+
+app.allowRendererProcessReuse = false // 这将允许在渲染器进程中加载​​非上下文感知的本机模块
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
@@ -19,8 +20,9 @@ async function createWindow(path) {
     height: 600, 
     useContentSize: true,
     fullscreen: true,
-    // backgroundColor: '#303133', //
+    backgroundColor: '#303133', //
     webPreferences: {
+      enableRemoteModule: true,
       webSecurity: false, // 允许 electron 跨域
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info

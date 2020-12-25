@@ -75,7 +75,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex'
 const ipcRenderer = require('electron').ipcRenderer
-// import log from '@/renderer/utils/log'
+// import log from '@/utils/log'
 export default {
   name: 'Login',
   data() {
@@ -282,7 +282,7 @@ $light_gray:#eee;
 }
 </style>
 <style lang="less" scoped>
-@import "~@/renderer/assets/less/atom/syntax-variables.less";
+@import "~@/assets/less/atom/syntax-variables.less";
 .stauts{
   font-size: 16px;
   color: #ffffff;

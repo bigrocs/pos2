@@ -29,6 +29,9 @@
           <el-form-item label="终端编号" prop="terminal">
             <el-input v-model="ruleForm.terminal"></el-input>
           </el-form-item>
+          <el-form-item label="终端部门范围" prop="depRange">
+            <el-input v-model="ruleForm.depRange"></el-input>
+          </el-form-item>
           <el-form-item label="数据库地址" prop="sql2000_host">
             <el-input v-model="ruleForm.sql2000_host"></el-input>
           </el-form-item>
@@ -67,9 +70,9 @@
 <script>
 import { Message } from 'element-ui'
 import { mapState } from 'vuex'
-import { parseTime } from '@/renderer/utils'
-import { isServer } from '@/renderer/utils/healthy'
-import { healthy as SQL2000Healthy } from '@/renderer/ipc/sql2000'
+import { parseTime } from '@/utils'
+import { isServer } from '@/utils/healthy'
+import { healthy , syncGoods, syncPay, syncUser } from '@/ipc/sql2000'
 // 安装页面
 export default {
   name: 'Install',
@@ -80,6 +83,7 @@ export default {
         api: 'http://rpc1.xilewanggou.com\nhttp://rpc2.xilewanggou.com\nhttp://rpc3.xilewanggou.com\nhttp://rpc4.xilewanggou.com\nhttp://rpc5.xilewanggou.com\n',
         isTerminal: false,
         terminal: '0001',
+        depRange: '',
         sql2000_host: '192.168.20.10',
         sql2000_port: '1433',
         sql2000_username: 'sa',
@@ -96,7 +100,6 @@ export default {
                   if (await isServer(url)) {
                     callback()
                   } else {
-                    callback()
                     callback(url + ':请求失败,请检查服务器地址')
                   }
                 })
@@ -147,7 +150,7 @@ export default {
             this.initConfig()
             if (this.ruleForm.isTerminal) {
               if (await this.isSql2000()) {
-                this.$store.state.healthy.isSql2000 = true
+                // this.$store.state.healthy.isSql2000 = true
                 this.syncInfo()
               } else {
                 return
@@ -162,7 +165,6 @@ export default {
       })
     },
     previous(formName) {
-      
       if (this.active-- === 0) this.active = 0
     },
     initConfig() {
@@ -184,22 +186,90 @@ export default {
       this.$router.push(`/login`)
     },
     async isSql2000() {
-      SQL2000Healthy({
+      let state = false
+      await healthy({
         database: this.ruleForm.sql2000_database,
         username: this.ruleForm.sql2000_username,
         password: this.ruleForm.sql2000_password,
         host: this.ruleForm.sql2000_host,
         port: this.ruleForm.sql2000_port
       }).then(res=>{
-        console.log(res);
-        return true
-      }).catch((error) => {
-            Message({
-              message: '数据库连接失败,请检查配置.',
+        if (res.data === true) {
+          state = true
+        }else{
+          Message({
+              message: '数据库连接失败,请检查配置:'+res.data.original.message,
               type: 'error',
               duration: 5 * 1000
             })
-            return true
+        }
+      }).catch((error) => {
+            Message({
+              message: '系统错误' + error,
+              type: 'error',
+              duration: 5 * 1000
+            })
+      })
+      return state
+    },
+    // 同步数据
+    syncInfo() {
+      // 初始化商品
+      this.activities.push({
+        content: '开始同步商品信息...',
+        timestamp: parseTime(new Date(), '{y}-{m}-{d} {h}:{i}:{s}'),
+        color: '#909399'
+      })
+      syncGoods().then(() => {
+        this.activities.push({
+          content: '同步商品信息完成!',
+          timestamp: parseTime(new Date(), '{y}-{m}-{d} {h}:{i}:{s}'),
+          color: '#67C23A'
+        })
+      }).catch((error) => {
+        this.activities.push({
+          content: '同步商品信息失败! Error:' + error,
+          timestamp: parseTime(new Date(), '{y}-{m}-{d} {h}:{i}:{s}'),
+          color: '#F56C6C'
+        })
+      })
+      // 初始化终端用户
+      this.activities.push({
+        content: '开始同步终端用户信息...',
+        timestamp: parseTime(new Date(), '{y}-{m}-{d} {h}:{i}:{s}'),
+        color: '#909399'
+      })
+      syncUser().then(() => {
+        this.activities.push({
+          content: '同步终端用户信息完成!',
+          timestamp: parseTime(new Date(), '{y}-{m}-{d} {h}:{i}:{s}'),
+          color: '#67C23A'
+        })
+      }).catch((error) => {
+        this.activities.push({
+          content: '同步终端用户信息失败! Error:' + error,
+          timestamp: parseTime(new Date(), '{y}-{m}-{d} {h}:{i}:{s}'),
+          color: '#F56C6C'
+        })
+      })
+      // 初始化终端支付
+      this.activities.push({
+        content: '开始同步终端支付信息...',
+        timestamp: parseTime(new Date(), '{y}-{m}-{d} {h}:{i}:{s}'),
+        color: '#909399'
+      })
+      syncPay().then(() => {
+        this.activities.push({
+          content: '同步终端支付信息完成!',
+          timestamp: parseTime(new Date(), '{y}-{m}-{d} {h}:{i}:{s}'),
+          color: '#67C23A'
+        })
+      }).catch((error) => {
+        this.activities.push({
+          content: '同步终端支付信息失败! Error:' + error,
+          timestamp: parseTime(new Date(), '{y}-{m}-{d} {h}:{i}:{s}'),
+          color: '#F56C6C'
+        })
       })
     },
   },

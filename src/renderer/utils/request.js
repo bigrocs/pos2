@@ -1,5 +1,5 @@
 import axios from 'axios'
-import store from '@/renderer/store'
+import store from '@/store'
 // create an axios instance
 const service = axios.create({
   baseURL: store.state.app.baseURL, // url = base url + request url

@@ -1,4 +1,4 @@
-import Store from '@/renderer/utils/electron-store'
+import Store from '@/utils/electron-store'
 const state = {
     api: '', // baseURL集合每行一个回车分割
     baseURL: '', // 主API地址
@@ -7,6 +7,9 @@ const state = {
     isTerminal: false, // 是否使用终端模式
     macAddress: '', // mac 地址
     terminal: '0001',
+    
+    depRange: '', // 设置部门范围后 pos只能经营指定部门范围内的商品
+
     // sql2000
     sql2000_host: '',
     sql2000_port: '1433',

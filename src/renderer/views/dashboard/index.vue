@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "~@/renderer/assets/less/atom/syntax-variables.less";
+@import "~@/assets/less/atom/syntax-variables.less";
 .dashboard {
   &-container {
     margin: 30px;

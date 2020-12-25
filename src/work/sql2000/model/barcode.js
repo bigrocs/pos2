@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize')
-import connection from '@/sql2000/model/connection'
-import { trim } from '@/utils'
+import connection from '~/sql2000/model/connection'
+import { trim } from '~/utils'
 const pool = connection.Pool()
-import store from '@/store'
+import Store from '~/utils/electron-store'
 import { parseTime } from '@/utils/index'
 
 // 删除字符串两边空格
@@ -18,6 +18,7 @@ const barcodes = {
   // 获取全部条形码商品
   List: (updatedAt, endAt) => {
     return new Promise((resolve, reject) => {
+      const store = Store.store
       if (!store.state.healthy.isSql2000) {
         reject(Error('服务器断开！！(SQL2000服务器断开)'))
       }
@@ -65,6 +66,7 @@ const barcodes = {
   // 获取全部条形码商品
   All: () => {
     return new Promise((resolve, reject) => {
+      const store = Store.store
       if (!store.state.healthy.isSql2000) {
         reject(Error('服务器断开！！(SQL2000服务器断开)'))
       }
@@ -82,11 +84,12 @@ const barcodes = {
   },
   // 获取指定商品的所有条码信息
   Get: (replacements) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise((resolve, reject) => {
+      const store = Store.store
       if (!store.state.healthy.isSql2000) {
         reject(Error('服务器断开！！(SQL2000服务器断开)'))
       }
-      await pool.DB.query(`select BarCode as barCode,PluCode as pluCode,PluName as name,Spec as spec,XgDate as updatedAt from tbmMulBar WHERE PluCode=:PluCode`,
+      pool.DB.query(`select BarCode as barCode,PluCode as pluCode,PluName as name,Spec as spec,XgDate as updatedAt from tbmMulBar WHERE PluCode=:PluCode`,
         { replacements: replacements, type: Sequelize.QueryTypes.SELECT }
       ).then(response => {
         response.forEach(items => {

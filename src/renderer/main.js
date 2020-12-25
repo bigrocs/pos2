@@ -6,11 +6,10 @@ import ElementUI from 'element-ui'
 
 import 'element-ui/lib/theme-chalk/index.css'
 
-import '@/renderer/assets/styles/index.scss' // global css
-import * as filters from '@/renderer/filters' // global filters
+import '@/assets/styles/index.scss' // global css
+import * as filters from '@/filters' // global filters
 import './icons' // icon
 import './permission' // permission control
-import './ipc/main' // 加载线程通信
 
 // set ElementUI lang to EN
 Vue.use(ElementUI)

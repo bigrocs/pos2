@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize')
-import connection from '@/sql2000/model/connection'
-import { trim } from '@/utils'
+import connection from '~/sql2000/model/connection'
+import { trim } from '~/utils'
 const pool = connection.Pool()
-import store from '@/store'
+import Store from '~/utils/electron-store'
 import { parseTime } from '@/utils/index'
 
 // 删除字符串两边空格
@@ -17,12 +17,14 @@ const goods = {
   // 获取商品列表
   List(updatedAt, endAt) {
     return new Promise((resolve, reject) => {
-      if (!store.state.healthy.isSql2000) {
+      const store = Store.store
+      if (!store.healthy.isSql2000) {
         reject(Error('服务器断开！！(SQL2000服务器断开)'))
       }
+
       let depRange = `DepCode != ''`
-      if (store.state.settings.depRange) {
-        depRange = 'DepCode between ' + store.state.settings.depRange.replace('-', ' AND ') + ' '
+      if (store.pos.depRange) {
+        depRange = 'DepCode between ' + store.pos.depRange.replace('-', ' AND ') + ' '
       }
       // sql  列表查询语句(状态启用商品)
       const sql = `

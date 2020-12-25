@@ -1,4 +1,4 @@
-import { parseTime } from '@/renderer/utils'
+import { parseTime } from '@/utils'
 const ping = require('ping')
 /**
  * navigator 设备情况
@@ -45,7 +45,7 @@ export async function syncDateTime(dateTime) { // 同步系统时间
  * @returns {Promise}
  */
 export async function isServer(url = null) {
-  const request = require('@/renderer/utils/request').default
+  const request = require('@/utils/request').default
   url ? (request.defaults.baseURL = url) : null
   var status = false
   await request({

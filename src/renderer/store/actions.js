@@ -1,7 +1,7 @@
 
 import _ from 'lodash'
 import getMAC from 'getmac'
-import Store from '@/renderer/utils/electron-store'
+import Store from '@/utils/electron-store'
 const actions = {
     initStore({ commit, state }) {
         // 读取默认配置合并进vuex状态

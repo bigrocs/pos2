@@ -18,6 +18,8 @@
   "main": "background.js",
   "dependencies": {
     "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
     "core-js": "^3.8.1",
     "electron-store": "^6.0.1",
     "element-ui": "^2.14.1",

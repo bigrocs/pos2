@@ -1,11 +1,11 @@
-import { onLine, isInternet, isServer } from '@/renderer/utils/healthy'
+import { onLine, isInternet, isServer } from '@/utils/healthy'
 // import { isSql2000 } from '@/sql2000/utils/healthy'
 const state = {
   date: new Date(), // 修改数据date
   onLine: false,
   isServer: false,
   isInternet: false,
-  // isSql2000: false,
+  isSql2000: false,
   interval: null
 }
 

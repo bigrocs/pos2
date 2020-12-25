@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 /* Layout */
-import Layout from '@/renderer/layout'
+import Layout from '@/layout'
 
 /* Router Modules */
 import terminalRouter from './modules/terminal'
@@ -39,7 +39,7 @@ export const constantRoutes = [
     meta: {
       title: '安装',
     },
-    component: () => import('@/renderer/views/install/index'),
+    component: () => import('@/views/install/index'),
     hidden: true
   },
   {
@@ -47,7 +47,7 @@ export const constantRoutes = [
     meta: {
       title: '登录',
     },
-    component: () => import('@/renderer/views/login/index'),
+    component: () => import('@/views/login/index'),
     hidden: true
   },
 
@@ -64,7 +64,7 @@ export const constantRoutes = [
     children: [{
       path: 'dashboard',
       name: 'Dashboard',
-      component: () => import('@/renderer/views/dashboard/index'),
+      component: () => import('@/views/dashboard/index'),
       meta: { title: '仪表盘', icon: 'dashboard' }
     }]
   }

@@ -1,4 +1,4 @@
-import Store from '@/renderer/utils/electron-store'
+import Store from '@/utils/electron-store'
 const state = {
     token:''
 }

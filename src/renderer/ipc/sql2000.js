@@ -1,19 +1,31 @@
+import request from '@/utils/ipc-request'
 
-import { Ipc } from '@/ipc/ipcRenderer'
-
-//  结账
-export function healthy(config) {
-    return new Promise((resolve, reject) => {
-        const method = 'sql2000.healthy'
-        Ipc.on('renderer', (event, arg) => {
-            if (arg.method === method) {
-                if (arg.state === 'success') {
-                    resolve(arg.data)
-                } else {
-                    reject(arg)
-                }
-            }
-        })
-        Ipc.send('work', method, config)
-    })
+export function healthy(data) {
+  return request({
+    url: '/sql2000/healthy',
+    method: 'post',
+    data: data
+  })
 }
+
+export function syncGoods() {
+  return request({
+    url: '/sql2000/syncGoods',
+    method: 'post',
+  })
+}
+
+export function syncPay() {
+  return request({
+    url: '/sql2000/syncPay',
+    method: 'post',
+  })
+}
+
+export function syncUser() {
+  return request({
+    url: '/sql2000/syncUser',
+    method: 'post',
+  })
+}
+

@@ -1,7 +1,5 @@
 const Sequelize = require('sequelize')
-import Store from '@/renderer/utils/electron-store'
-const store = Store.store
-console.log(store);
+import Store from '~/utils/electron-store'
 
 function sequelize(config) {
   return new Sequelize(config.database, config.username, config.password, {
@@ -13,7 +11,7 @@ function sequelize(config) {
         useUTC: false,
         tdsVersion: '7_1',
         enableArithAbort: false,
-        requestTimeout: 5000 // 超时时间 5s
+        // requestTimeout: 5000 // 超时时间 5s
       }
     },
     logging: false
@@ -22,19 +20,22 @@ function sequelize(config) {
 
 const connection = {
   DB: '',
-  Pool: (config) => {
+  Pool(config) {
     if (config) {
-      connection.DB = sequelize(config)
-      return connection
+      this.DB = sequelize(config)
+      return this
     }
-    connection.DB = sequelize({
-      database: store.state.settings.sql2000_database,
-      username: store.state.settings.sql2000_username,
-      password: store.state.settings.sql2000_password,
-      host: store.state.settings.sql2000_host,
-      port: store.state.settings.sql2000_port
-    })
-    return connection
+    const store = Store.store
+    if (Object.prototype.hasOwnProperty.call(store, 'pos')) {
+      this.DB = sequelize({
+        database: store.pos.sql2000_database,
+        username: store.pos.sql2000_username,
+        password: store.pos.sql2000_password,
+        host: store.pos.sql2000_host,
+        port: store.pos.sql2000_port
+      })
+      return this
+    }
   }
 }
 export default connection

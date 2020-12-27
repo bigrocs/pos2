@@ -20,7 +20,7 @@ export function sync(req, res) {
             force: true
           })
           bulkCreate(users).then(() => {
-            // res.send(true)
+            res.send(true)
           }).catch(error => {
             res.send(new Error('插入用户数据失败:' + error.message))
           })

@@ -55,33 +55,4 @@ const Goods = sequelize.define('good', {
 sequelize.sync({
   // force: true
 })
-// 通过条形码获取商品
-sequelize.barcodeByGoods = (barcode) => {
-  return new Promise((resolve, reject) => {
-    Goods.findOne({ where: { barCode: barcode }}).then(goods => {
-      resolve(goods)
-    }).catch(error => {
-      reject(error)
-    })
-  })
-}
-sequelize.plucodeByGoods = (pluCode) => {
-  return new Promise((resolve, reject) => {
-    Goods.findOne({ where: { pluCode: pluCode }}).then(goods => {
-      resolve(goods)
-    }).catch(error => {
-      reject(error)
-    })
-  })
-}
-// 通过条形码获取全部商品
-sequelize.barcodeAll = () => {
-  return new Promise((resolve, reject) => {
-    Goods.findAll({ where: { barCode: { [Op.ne]: '' }}}).then(goods => {
-      resolve(goods)
-    }).catch(error => {
-      reject(error)
-    })
-  })
-}
 export default sequelize

@@ -1,28 +1,24 @@
 // sync 同步数据
 import SQLGoods from '~/sql2000/model/goods'
 import SQLBarcode from '~/sql2000/model/barcode'
-import { Message } from 'element-ui'
 import { parseTime } from '~/utils/index'
-// import sequelize from '~/sqlite3/model/goods'
+const Goods = require('~/sqlite3/goods')
 
-// const Goods = sequelize.models.good
 
-export async function sync(enforce = false) {
+export async function sync(req, res) {
+    const enforce = false
     // 更新商品
     let updatedAt = new Date('2004')
-    // await Goods.findOne({
-    //   attributes: ['updatedAt'],
-    //   order: [['updatedAt', 'DESC']],
-    //   where: { isPack: false }
-    // }).then(res => {
-    //   updatedAt = res ? res.updatedAt : new Date('2004')
-    // })
+    await Goods.findOne({
+      attributes: ['updatedAt'],
+      order: [['updatedAt', 'DESC']],
+      where: { isPack: false }
+    }).then(res => {
+      updatedAt = res ? res.updatedAt : new Date('2004')
+    })
     const sync = async(updatedAt, endAt) => {
       await SQLGoods.List(updatedAt, endAt).then(async response => {
         const goods = []
-
-
-        console.log(updatedAt, endAt);
         if (response) {
           response.forEach(async item => {
             item.price = Math.round(item.price * 100)
@@ -40,25 +36,25 @@ export async function sync(enforce = false) {
               snapshot: item,
               updatedAt: item.updatedAt
             })
-            // await Goods.destroy({
-            //   where: {
-            //     indexes: item.barCode
-            //   }
-            // })
+            await Goods.destroy({
+              where: {
+                indexes: item.barCode
+              }
+            })
           })
-          console.log(goods);
-          
-          // await Goods.bulkCreate(goods, { updateOnDuplicate: ['pluCode', 'isPack', 'barCode', 'depCode', 'price', 'name', 'unit', 'spec', 'type', 'snapshot', 'updatedAt'] }).then(() => {
-          //   Message({
-          //     showClose: true,
-          //     message: parseTime(updatedAt) + ' - ' + parseTime(endAt) + ' 商品同步成功',
-          //     type: 'success'
-          //   })
-          // }).catch(error => {
-          //   // reject(new Error('插入商品PLU失败:' + error.message))
-          // })
+          await Goods.bulkCreate(goods, { updateOnDuplicate: ['pluCode', 'isPack', 'barCode', 'depCode', 'price', 'name', 'unit', 'spec', 'type', 'snapshot', 'updatedAt'] }).then(() => {
+            // Message({
+            //   showClose: true,
+            //   message: parseTime(updatedAt) + ' - ' + parseTime(endAt) + ' 商品同步成功',
+            //   type: 'success'
+            // })
+          }).catch(error => {
+            // res.send(new Error('插入商品PLU失败:' + error.message))
+            // reject(new Error('插入商品PLU失败:' + error.message))
+          })
         }
       }).catch(error => {
+        // res.send(new Error('查询商品PLU失败:' + error.message))
         // reject(new Error('查询商品PLU失败:' + error.message))
       })
     }
@@ -77,13 +73,13 @@ export async function sync(enforce = false) {
       await sync(updatedAt, endAt)
     }
     // 更新商品条码信息
-    // await Goods.findOne({
-    //   attributes: ['updatedAt'],
-    //   order: [['updatedAt', 'DESC']],
-    //   where: { isPack: true }
-    // }).then(res => {
-    //   updatedAt = res ? res.updatedAt : new Date('2004')
-    // })
+    await Goods.findOne({
+      attributes: ['updatedAt'],
+      order: [['updatedAt', 'DESC']],
+      where: { isPack: true }
+    }).then(res => {
+      updatedAt = res ? res.updatedAt : new Date('2004')
+    })
     const syncBarcode = async(updatedAt, endAt) => {
       await SQLBarcode.List(updatedAt, endAt).then(async response => {
         const barCodes = []
@@ -105,19 +101,21 @@ export async function sync(enforce = false) {
               updatedAt: item.updatedAt
             })
           })
-          // await Goods.bulkCreate(barCodes,
-          //   { updateOnDuplicate: ['pluCode', 'isPack', 'barCode', 'depCode', 'price', 'name', 'unit', 'spec', 'type', 'snapshot', 'updatedAt'] }
-          // ).then(() => {
-          //   Message({
-          //     showClose: true,
-          //     message: parseTime(updatedAt) + ' - ' + parseTime(endAt) + ' 商品条码信息同步成功',
-          //     type: 'success'
-          //   })
-          // }).catch(error => {
-          //   // reject(new Error('插入商品条码失败:' + error.message))
-          // })
+          await Goods.bulkCreate(barCodes,
+            { updateOnDuplicate: ['pluCode', 'isPack', 'barCode', 'depCode', 'price', 'name', 'unit', 'spec', 'type', 'snapshot', 'updatedAt'] }
+          ).then(() => {
+            // Message({
+            //   showClose: true,
+            //   message: parseTime(updatedAt) + ' - ' + parseTime(endAt) + ' 商品条码信息同步成功',
+            //   type: 'success'
+            // })
+          }).catch(error => {
+            // res.send(new Error('插入商品条码失败:' + error.message))
+            // reject(new Error('插入商品条码失败:' + error.message))
+          })
         }
       }).catch(error => {
+        // res.send(new Error('查询商品条码失败:' + error.message))
         // reject(new Error('查询商品条码失败:' + error.message))
       })
     }
@@ -134,4 +132,5 @@ export async function sync(enforce = false) {
       const endAt = new Date(String(new Date().getFullYear() + 1) + '-01-01 00:00:00') // 结束明年1月1日
       await syncBarcode(updatedAt, endAt)
     }
+    res.send(true)
 }
